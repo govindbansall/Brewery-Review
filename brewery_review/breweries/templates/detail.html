@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brewery Detail</title>
+</head>
+<body>
+    <h2>{{ brewery.name }}</h2>
+    <p>Address: {{ brewery.address }}</p>
+    <p>Phone: {{ brewery.phone }}</p>
+    <p>Website: <a href="{{ brewery.website }}">{{ brewery.website }}</a></p>
+    <p>City: {{ brewery.city }}, State: {{ brewery.state }}</p>
+
+    <h3>Reviews:</h3>
+    <ul>
+        {% for review in reviews %}
+        <li>
+            <strong>{{ review.user.username }}</strong> rated it {{ review.rating }}/5<br>
+            {{ review.description }}<br>
+            <em>{{ review.created_at }}</em>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Add a Review:</h3>
+    <form method="post" action="{% url 'add_review' brewery.id %}">
+        {% csrf_token %}
+        <label for="rating">Rating:</label>
+        <select name="rating" id="rating">
+            {% for i in 1|range:6 %}
+            <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+        </select><br>
+        <label for="description">Description:</label><br>
+        <textarea name="description" id="description" rows="4" cols="50"></textarea><br>
+        <button type="submit">Submit Review</button>
+    </form>
+</body>
+</html>
